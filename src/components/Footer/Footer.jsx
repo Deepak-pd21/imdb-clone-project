@@ -19,7 +19,7 @@ const Footer = () => {
         </div>
 
         <p className="footer__copy">
-          © {year} Deepak · Built for learning purposes only
+          © {year} Deepak · Built for self learning purposes only
         </p>
       </div>
     </footer>
