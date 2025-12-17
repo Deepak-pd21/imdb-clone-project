@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "./MovieDetail.css";
+import { useWatchlist } from "../../context/WatchlistContext";
 
 const MovieDetail = () => {
   const [currentMovieDetail, setMovie] = useState();
-  const [isInWatchlist, setIsInWatchlist] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(false);
+  const { watchlist, favorites, addToList, removeFromList } = useWatchlist();
   const { id } = useParams();
 
   const getData = () => {
@@ -16,63 +16,31 @@ const MovieDetail = () => {
       .then((data) => setMovie(data));
   };
 
-  const checkLists = (movieId) => {
-    const wl = JSON.parse(localStorage.getItem("watchlist")) || [];
-    const fav = JSON.parse(localStorage.getItem("favorites")) || [];
-    setIsInWatchlist(wl.some((m) => m.id === Number(movieId)));
-    setIsFavorite(fav.some((m) => m.id === Number(movieId)));
-  };
-
   useEffect(() => {
     getData();
     window.scrollTo(0, 0);
-    checkLists(id);
     // eslint-disable-next-line
   }, [id]);
 
-  // save compact movie object
-  const addToList = (key, movie) => {
-    const existing = JSON.parse(localStorage.getItem(key)) || [];
-    const already = existing.some((m) => m.id === movie.id);
-    if (already) return;
-
-    const movieToSave = {
-      id: movie.id,
-      title: movie.title || movie.original_title,
-      poster_path: movie.poster_path,
-    };
-
-    const updated = [...existing, movieToSave];
-    localStorage.setItem(key, JSON.stringify(updated));
-  };
-
-  const removeFromList = (key, movieId) => {
-    const existing = JSON.parse(localStorage.getItem(key)) || [];
-    const updated = existing.filter((m) => m.id !== movieId);
-    localStorage.setItem(key, JSON.stringify(updated));
-  };
+  const numericId = Number(id);
+  const isInWatchlist = watchlist.some((m) => m.id === numericId);
+  const isFavorite = favorites.some((m) => m.id === numericId);
 
   const handleToggleWatchlist = () => {
     if (!currentMovieDetail) return;
-
     if (isInWatchlist) {
       removeFromList("watchlist", currentMovieDetail.id);
-      setIsInWatchlist(false);
     } else {
       addToList("watchlist", currentMovieDetail);
-      setIsInWatchlist(true);
     }
   };
 
   const handleToggleFavorite = () => {
     if (!currentMovieDetail) return;
-
     if (isFavorite) {
       removeFromList("favorites", currentMovieDetail.id);
-      setIsFavorite(false);
     } else {
       addToList("favorites", currentMovieDetail);
-      setIsFavorite(true);
     }
   };
 
@@ -138,7 +106,6 @@ const MovieDetail = () => {
                 : ""}
             </div>
 
-            {/* Watchlist / Favorites actions */}
             <div className="movie__actions">
               <button
                 className="movieActionBtn movieActionBtn--secondary"
