@@ -2,9 +2,13 @@ import React, { useEffect, useState } from "react";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import "./Header.css";
 
+// ...imports
+
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [query, setQuery] = useState("");
+  const [watchlistCount, setWatchlistCount] = useState(0);
+  const [favoritesCount, setFavoritesCount] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -13,11 +17,21 @@ const Header = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    const wl = JSON.parse(localStorage.getItem("watchlist")) || [];
+    const fav = JSON.parse(localStorage.getItem("favorites")) || [];
+    setWatchlistCount(wl.length);
+    setFavoritesCount(fav.length);
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!query.trim()) return;
-    // later you can navigate to a /search route and use this query
-  navigate(`/search/${encodeURIComponent(query.trim())}`);  };
+    navigate(`/search/${encodeURIComponent(query.trim())}`);
+  };
+
+  const goToWatchlist = () => navigate("/watchlist");
+  const goToFavorites = () => navigate("/favorites");
 
   return (
     <header className={`header ${scrolled ? "header--scrolled" : ""}`}>
@@ -60,16 +74,26 @@ const Header = () => {
         </nav>
       </div>
 
-      {/* right side search */}
-      <form className="headerSearch" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          className="headerSearch__input"
-          placeholder="Search movies..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-      </form>
+      {/* RIGHT: search + watchlist + favorites */}
+      <div className="headerRight">
+        <form className="headerSearch" onSubmit={handleSubmit}>
+          <input
+            type="text"
+            className="headerSearch__input"
+            placeholder="Search movies..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </form>
+
+        <button className="headerBtn headerBtn--secondary" onClick={goToWatchlist}>
+          Watchlist {watchlistCount > 0 && `(${watchlistCount})`}
+        </button>
+
+        <button className="headerBtn headerBtn--primary" onClick={goToFavorites}>
+          Favorites {favoritesCount > 0 && `(${favoritesCount})`}
+        </button>
+      </div>
     </header>
   );
 };

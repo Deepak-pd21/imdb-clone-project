@@ -124,3 +124,36 @@
   border-color: #f5c518;
   box-shadow: 0 0 0 1px rgba(245, 197, 24, 0.6);
 }
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.headerBtn {
+  border: none;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.headerBtn--secondary {
+  background-color: #181818;
+  color: #f5f5f5;
+}
+
+.headerBtn--secondary:hover {
+  background-color: #262626;
+}
+
+.headerBtn--primary {
+  background: linear-gradient(135deg, #f5c518, #ff9100);
+  color: #000;
+  font-weight: 600;
+}
+
+.headerBtn--primary:hover {
+  filter: brightness(1.05);
+}

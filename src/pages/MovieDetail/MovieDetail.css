@@ -302,3 +302,48 @@
     bottom: 80px;
   }
 }
+.movie__actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.movieActionBtn {
+  border: none;
+  border-radius: 999px;
+  padding: 10px 18px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.movieActionBtn--secondary {
+  background-color: #181818;
+  color: #f5f5f5;
+}
+
+.movieActionBtn--primary {
+  background: linear-gradient(135deg, #f5c518, #ff9100);
+  color: #000;
+  font-weight: 600;
+}
+
+.movieActionBtn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.movieActionBtn {
+  /* existing styles */
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.movieActionIcon {
+  color: #bbbbbb;
+  transition: color 0.18s ease;
+}
+
+.movieActionBtn:hover .movieActionIcon {
+  color: #f5c518; /* IMDb yellow */
+}
