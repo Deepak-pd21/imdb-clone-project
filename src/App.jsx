@@ -12,21 +12,21 @@ import Favorites from "./pages/Favorites";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App min-h-screen w-full bg-black">
       <Header />
       <Routes>
         <Route index element={<Home />} />
         <Route path="/movie/:id" element={<MovieDetail />} />
         <Route path="/movies/:type" element={<MovieList />} />
         <Route path="/search/:query" element={<SearchResults />} />
-        <Route path="/*" element={<h1>Error 404!!!</h1>} />
-        <Route path="/movie/:id" element={<MovieDetail />} />
         <Route path="/watchlist" element={<Watchlist />} />
         <Route path="/favorites" element={<Favorites />} />
+        <Route path="/*" element={<h1 className="text-white">Error 404!!!</h1>} />
       </Routes>
       <Footer />
     </div>
   );
 }
+
 
 export default App;
